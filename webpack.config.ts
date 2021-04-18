@@ -33,8 +33,7 @@ const config: webpack.Configuration = {
         exclude: /node-modules/
       }
     ]
-  },
-  plugins: [new webpack.IgnorePlugin({ resourceRegExp: /aws-sdk/ })]
+  }
 }
 
 export default config
