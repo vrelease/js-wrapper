@@ -1,0 +1,53 @@
+{
+  "name": "vrelease-bin",
+  "version": "0.2.0",
+  "description": "Binary wrapper for vrelease - a kiss solution to easily create project releases",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vrelease/vrelease-js.git"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "author": {
+    "name": "Caian R. Ertl",
+    "email": "hi@caian.org",
+    "url": "https://caian.org"
+  },
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/vrelease/vrelease-js/issues"
+  },
+  "keywords": [
+    "cli-app",
+    "cli",
+    "bin",
+    "binary",
+    "vrelease",
+    "ci-cd",
+    "continuous",
+    "delivery",
+    "pipeline",
+    "release",
+    "gitflow",
+    "javascript",
+    "js",
+    "wrapper"
+  ],
+  "homepage": "https://github.com/vrelease/vrelease-js#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.15",
+    "@babel/eslint-parser": "^7.13.14",
+    "@babel/preset-env": "^7.13.15",
+    "babel-jest": "^26.6.3",
+    "husky": "^6.0.0",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "standard": "^16.0.3"
+  }
+}
