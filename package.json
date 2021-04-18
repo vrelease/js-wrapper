@@ -16,6 +16,11 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 10"
+  ],
   "author": {
     "name": "Caian R. Ertl",
     "email": "hi@caian.org",
