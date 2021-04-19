@@ -20,7 +20,6 @@ const config: webpack.Configuration = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js'
   },
   resolve: {
     extensions: ['.ts', '.js']
