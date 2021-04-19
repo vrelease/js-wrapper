@@ -20,6 +20,7 @@ const config: webpack.Configuration = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
+    filename: 'cli.js'
   },
   resolve: {
     extensions: ['.ts', '.js']
