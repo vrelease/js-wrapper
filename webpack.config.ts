@@ -19,7 +19,7 @@ const config: webpack.Configuration = {
     chunkIds: 'size',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'lib'),
     filename: 'cli.js'
   },
   resolve: {

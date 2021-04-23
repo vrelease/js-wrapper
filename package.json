@@ -14,7 +14,7 @@
     "prepublish": "npm run build"
   },
   "bin": {
-    "vrelease": "dist/cli.js"
+    "vrelease": "lib/cli.js"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,11 @@
     "node": ">=0.10.0"
   },
   "files": [
+    "README.md",
+    "LICENSE",
     "bin/vrelease-*",
     "SHASUM512",
-    "dist/cli.js"
+    "lib/cli.js"
   ],
   "standardx": {
     "parser": "@typescript-eslint/parser",
@@ -56,7 +58,7 @@
       }
     },
     "testPathIgnorePatterns": [
-      "/dist/",
+      "/lib/",
       "/node_modules/"
     ]
   },

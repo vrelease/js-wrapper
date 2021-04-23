@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES3",
     "module": "commonjs",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "strict": true,
     "removeComments": true,
     "noUnusedLocals": true,
@@ -12,7 +12,7 @@
   },
   "exclude": [
     "node_modules",
-    "dist",
+    "lib",
     "tests",
     "webpack.config.ts"
   ]
