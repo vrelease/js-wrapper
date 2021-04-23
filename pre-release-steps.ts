@@ -48,8 +48,9 @@ async function main (): Promise<void> {
   log('calculating hashes')
   for (let i = 0; i < artifacts.length; i++) {
     const a = artifacts[i]
-    const s = await pathToSHA512(a)
+    await asyncExec('chmod +x ' + a)
 
+    const s = await pathToSHA512(a)
     shasum.push(`${s} ${path.basename(a)}`)
   }
 
