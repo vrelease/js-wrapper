@@ -8,17 +8,15 @@ import { pathToSHA512 } from 'file-to-sha512'
 
 import { version } from './package.json'
 
-const fsPromise = fs.promises
+const asyncFs = fs.promises
+
 const binFile = (f: string): string => path.join(__dirname, 'bin', f)
+const artifactUrl = (f: string): string => `https://github.com/vrelease/vrelease/releases/download/v${version}/${f}`
 
-function vreleaseArtifactUrl (name: string): string {
-  return `https://github.com/vrelease/vrelease/releases/download/v${version}/${name}`
-}
+async function downloadAndWrite (fn: string): Promise<string> {
+  const destPath = binFile(fn)
 
-async function downloadAndWrite (artifact: string): Promise<string> {
-  const destPath = binFile(artifact)
-
-  const res = await axios.get(vreleaseArtifactUrl(artifact), { responseType: 'stream' })
+  const res = await axios.get(artifactUrl(fn), { responseType: 'stream' })
   const stream = res.data.pipe(fs.createWriteStream(destPath))
   await new Promise((fulfill) => stream.on('finish', fulfill))
 
@@ -47,7 +45,7 @@ async function main (): Promise<void> {
     shasum.push(`${s} ${path.basename(a)}`)
   }
 
-  await fsPromise.writeFile(path.join(__dirname, 'SHASUM512'), shasum.join('\n'))
+  await asyncFs.writeFile(path.join(__dirname, 'SHASUM512'), shasum.join('\n'))
 }
 
-(async () => { await main() })()
+(async (): Promise<void> => await main())()
