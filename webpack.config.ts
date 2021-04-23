@@ -25,6 +25,9 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: ['.ts', '.js']
   },
+  plugins: [
+      new webpack.BannerPlugin({ raw: true, banner: '#!/usr/bin/env node' })
+  ],
   module: {
     rules: [
       {
