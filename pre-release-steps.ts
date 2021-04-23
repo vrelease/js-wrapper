@@ -1,6 +1,8 @@
 // standard
 import fs from 'fs'
 import path from 'path'
+import util from 'util'
+import { exec } from 'child_process'
 
 // 3rd-party
 import axios from 'axios'
@@ -9,6 +11,7 @@ import { pathToSHA512 } from 'file-to-sha512'
 import { version } from './package.json'
 
 const asyncFs = fs.promises
+const asyncExec = util.promisify(exec)
 
 const binFile = (f: string): string => path.join(__dirname, 'bin', f)
 const artifactUrl = (f: string): string => `https://github.com/vrelease/vrelease/releases/download/v${version}/${f}`
@@ -46,6 +49,7 @@ async function main (): Promise<void> {
   }
 
   await asyncFs.writeFile(path.join(__dirname, 'SHASUM512'), shasum.join('\n'))
+  await asyncExec('git tag v' + version)
 }
 
 (async (): Promise<void> => await main())()
