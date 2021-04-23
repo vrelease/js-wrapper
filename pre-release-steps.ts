@@ -15,6 +15,9 @@ const asyncExec = util.promisify(exec)
 
 const binFile = (f: string): string => path.join(__dirname, 'bin', f)
 const artifactUrl = (f: string): string => `https://github.com/vrelease/vrelease/releases/download/v${version}/${f}`
+const log = (t: string): void => console.log(' ~ ' + t)
+
+const shasumFilename = 'SHASUM512'
 
 async function downloadAndWrite (fn: string): Promise<string> {
   const destPath = binFile(fn)
@@ -38,9 +41,11 @@ async function downloadArtifacts (): Promise<string[]> {
 }
 
 async function main (): Promise<void> {
+  log('downloading artifacts')
   const artifacts = await downloadArtifacts()
   const shasum = []
 
+  log('calculating hashes')
   for (let i = 0; i < artifacts.length; i++) {
     const a = artifacts[i]
     const s = await pathToSHA512(a)
@@ -48,8 +53,14 @@ async function main (): Promise<void> {
     shasum.push(`${s} ${path.basename(a)}`)
   }
 
-  await asyncFs.writeFile(path.join(__dirname, 'SHASUM512'), shasum.join('\n'))
+  await asyncFs.writeFile(path.join(__dirname, shasumFilename), shasum.join('\n'))
+
+  log('closing tag')
+  await asyncExec('git add ' + shasumFilename)
+  await asyncExec('git commit -m "chore: update binary hashes"')
   await asyncExec('git tag v' + version)
+
+  log('done')
 }
 
-(async (): Promise<void> => await main())()
+;(async (): Promise<void> => await main())()
