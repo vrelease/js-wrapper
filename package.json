@@ -10,6 +10,7 @@
     "test:ci": "npm run test -- --coverage --ci",
     "fix:style": "npm run prettify && npm run standard",
     "check:lint": "eslint --format=codeframe './src/*.ts'",
+    "prerelease": "ts-node pre-release-steps.ts",
     "prepublish": "npm run build"
   },
   "bin": {
