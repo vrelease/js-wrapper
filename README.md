@@ -8,6 +8,12 @@ Javascript wrapper for [`vrelease`][vrelease]. Install with npm:
 npm install --save-dev vrelease-bin
 ```
 
+Or yarn:
+
+```sh
+yarn add --dev vrelease-bin
+```
+
 [vrelease]: https://github.com/vrelease/vrelease
 
 
