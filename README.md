@@ -1,3 +1,17 @@
+[![Code Quality][lgtm-shield]][lgtm-url]
+[![NPM Downloads][npm-shield]][npm-url]
+[![GitHub tag][tag-shield]][tag-url]
+
+[lgtm-shield]: https://img.shields.io/lgtm/grade/javascript/g/vrelease/vrelease-js.svg?logo=lgtm&style=flat-square
+[lgtm-url]: https://lgtm.com/projects/g/vrelease/vrelease-js/context:javascript
+
+[npm-shield]: https://img.shields.io/npm/dm/vrelease-bin?logo=node.js&logoColor=fff&style=flat-square
+[npm-url]: https://npmjs.com/package/vrelease-bin
+
+[tag-shield]: https://img.shields.io/github/tag/vrelease/vrelease-js.svg?logo=git&logoColor=FFF&style=flat-square
+[tag-url]: https://github.com/vrelease/vrelease-js/releases
+
+
 # vrelease-js
 
 <img src="icon.svg" height="240px" align="right"/>
