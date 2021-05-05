@@ -24,6 +24,7 @@
     "node": ">=0.10.0"
   },
   "files": [
+    "icon.svg",
     "LICENSE",
     "bin/vrelease-*",
     "SHASUM512",
