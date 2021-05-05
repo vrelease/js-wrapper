@@ -2,15 +2,17 @@ import path from 'path'
 import { spawn } from 'child_process'
 
 function getPlatformBin (): string {
+  const p = (s: string): string => 'vrelease-' + s
+
   switch (process.platform) {
     case 'win32':
-      return 'vrelease-windows.exe'
+      return p('windows.exe')
 
     case 'linux':
-      return 'vrelease-linux'
+      return p('linux')
 
     case 'darwin':
-      return 'vrelease-macos'
+      return p('macos')
 
     default:
       throw new Error(`unsupported platform ${process.platform}`)
@@ -24,12 +26,12 @@ function getPlatformBin (): string {
     }
 
     const file = getPlatformBin()
-
     const binPath = path.resolve(__dirname, '..', 'bin', file)
-    const input = process.argv.slice(2)
 
+    const input = process.argv.slice(2)
     spawn(binPath, input, { stdio: 'inherit' }).on('exit', process.exit)
   } catch (e) {
+    console.log(e)
     process.exit(2)
   }
 })()
