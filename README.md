@@ -12,7 +12,7 @@
 [tag-url]: https://github.com/vrelease/vrelease-js/releases
 
 
-# vrelease-js
+# `vrelease-js`
 
 <img src="icon.svg" height="240px" align="right"/>
 
