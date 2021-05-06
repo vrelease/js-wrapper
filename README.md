@@ -1,5 +1,5 @@
 [![Run Test][gh-run-t-shield]][gh-run-t-url]
-[![Package Test][gh-pkg-t-shield]][gh-pkg-
+[![Package Test][gh-pkg-t-shield]][gh-pkg-t-url]
 [![Code Quality][lgtm-shield]][lgtm-url]
 [![NPM Downloads][npm-shield]][npm-url]
 [![GitHub tag][tag-shield]][tag-url]
