@@ -56,10 +56,15 @@ async function main (): Promise<void> {
 
   await asyncFs.writeFile(path.join(__dirname, shasumFilename), shasum.join('\n'))
 
-  log('closing tag')
-  await asyncExec('git add ' + shasumFilename)
-  await asyncExec('git commit -m "chore: update binary hashes"')
-  await asyncExec('git tag v' + version)
+  try {
+    log('closing tag')
+    await asyncExec('git add ' + shasumFilename)
+    await asyncExec('git commit -m "chore: update binary hashes"')
+    await asyncExec('git tag v' + version)
+  } catch (e) {
+    log('got: ' + e)
+    log('skipping tag...')
+  }
 
   log('done')
 }
