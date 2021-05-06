@@ -29,6 +29,11 @@ jobs:
       - name: Checkout to vrelease-js
         uses: actions/checkout@v2
 
+      - name: Configure git
+        run: |
+          git config --global user.email "hi@caian.org"
+          git config --global user.name "Caian R. Ertl"
+
       - name: Set up NodeJS ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
