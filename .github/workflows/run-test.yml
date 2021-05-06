@@ -1,0 +1,50 @@
+name: run-test
+
+on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - "*"
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    branches:
+      - "*"
+    tags:
+      - "*"
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  run-test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [8.x, 10.x, 12.x, 14.x, 15.x, 16.x]
+
+    steps:
+      - name: Checkout to vrelease-js
+        uses: actions/checkout@v2
+
+      - name: Set up NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Run pre-release steps
+        run: npm run prerelease
+
+      - name: Build package
+        run: npm run build
+
+      - name: Run vrelease (version)
+        run: node lib/cli.js -v
+
+      - name: Run vrelease (help)
+        run: node lib/cli.js -h
