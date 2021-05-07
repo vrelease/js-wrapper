@@ -1,6 +1,6 @@
 {
   "name": "vrelease-bin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "binary wrapper for vrelease - a kiss solution to easily create project releases",
   "scripts": {
     "build": "webpack",
@@ -8,8 +8,7 @@
     "prettify": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write './src/*.ts'",
     "fix:style": "npm run prettify && npm run standard",
     "check:lint": "eslint --format=codeframe './src/*.ts'",
-    "prerelease": "ts-node pre-release-steps.ts",
-    "prepublish": "npm run build"
+    "prerelease": "ts-node pre-release-steps.ts"
   },
   "bin": {
     "vrelease": "lib/cli.js"
@@ -19,7 +18,7 @@
     "url": "git+https://github.com/vrelease/vrelease-js.git"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=10"
   },
   "files": [
     "icon.svg",
