@@ -41,6 +41,8 @@ yarn add --dev vrelease-bin
 
 ## How can I use it?
 
+For instructions on how to use `vrelease`, [see this](https://github.com/vrelease/vrelease#how-can-i-use-it).
+
 ### Global install
 
 ```sh
