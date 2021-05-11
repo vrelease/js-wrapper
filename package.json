@@ -1,6 +1,6 @@
 {
   "name": "vrelease-bin",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "binary wrapper for vrelease - a kiss solution to easily create project releases",
   "scripts": {
     "build": "webpack",
