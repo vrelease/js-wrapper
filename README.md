@@ -44,7 +44,7 @@ yarn add --dev vrelease-bin
 ### Global install
 
 ```sh
-npm i -g vrelease-js
+npm i -g vrelease-bin
 ```
 
 Sudo privileges might be needed. After that, `vrelease` will be available at
