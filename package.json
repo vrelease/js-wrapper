@@ -4,10 +4,8 @@
   "description": "binary wrapper for vrelease - a kiss solution to easily create project releases",
   "scripts": {
     "build": "webpack",
-    "standard": "standardx --fix ./src/*.ts",
-    "prettify": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write './src/*.ts'",
-    "fix:style": "npm run prettify && npm run standard",
-    "check:lint": "eslint --format=codeframe './src/*.ts'",
+    "fix:style": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write 'src/*.ts' && standardx --fix 'src/*.ts'",
+    "check:lint": "eslint --format=codeframe 'src/*.ts'",
     "prerelease": "ts-node pre-release-steps.ts"
   },
   "bin": {
@@ -31,6 +29,11 @@
     "parser": "@typescript-eslint/parser",
     "plugins": [
       "@typescript-eslint/eslint-plugin"
+    ]
+  },
+  "lint-staged": {
+    "src/*.ts": [
+      "npm run fix:style"
     ]
   },
   "author": {
@@ -73,6 +76,7 @@
     "eslint-plugin-promise": "^4.3.1",
     "file-to-sha512": "^0.0.1",
     "husky": "^7.0.1",
+    "lint-staged": "^11.1.1",
     "prettier": "^2.3.2",
     "standardx": "^7.0.0",
     "ts-loader": "^9.2.4",

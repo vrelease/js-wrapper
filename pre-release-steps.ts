@@ -24,7 +24,7 @@ async function downloadAndWrite (fn: string): Promise<string> {
 
   const res = await axios.get(artifactUrl(fn), { responseType: 'stream' })
   const stream = res.data.pipe(fs.createWriteStream(destPath))
-  await new Promise((fulfill) => stream.on('finish', fulfill))
+  await new Promise((resolve) => stream.on('finish', resolve))
 
   return destPath
 }
@@ -62,7 +62,7 @@ async function main (): Promise<void> {
     await asyncExec('git commit -m "chore: update binary hashes"')
     await asyncExec('git tag v' + version)
   } catch (e) {
-    log('got: ' + e)
+    log('got: '.concat(e.toString()))
     log('skipping tag...')
   }
 
