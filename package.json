@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack",
     "fix:style": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write 'src/*.ts' && standardx --fix 'src/*.ts'",
-    "check:lint": "eslint --format=codeframe 'src/*.ts'",
+    "check:lint": "eslint --format=codeframe 'src/*.ts' && standardx",
     "prerelease": "ts-node pre-release-steps.ts"
   },
   "bin": {

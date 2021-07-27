@@ -14,6 +14,7 @@
     "node_modules",
     "lib",
     "tests",
-    "webpack.config.ts"
+    "webpack.config.ts",
+    ".eslintrc.js"
   ]
 }
