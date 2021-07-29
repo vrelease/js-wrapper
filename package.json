@@ -3,7 +3,10 @@
   "version": "0.3.1",
   "description": "binary wrapper for vrelease - a kiss solution to easily create project releases",
   "scripts": {
-    "build": "webpack",
+    "build:js": "webpack",
+    "bump:dev": "ncu --upgrade --dep dev",
+    "bump:prod": "ncu --upgrade --dep prod --target minor",
+    "bump:all": "npm run bump:dev && npm run bump:prod",
     "fix:style": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write 'src/*.ts' && standardx --fix 'src/*.ts'",
     "check:lint": "eslint --format=codeframe 'src/*.ts' && standardx",
     "prerelease": "ts-node pre-release-steps.ts"
@@ -63,7 +66,7 @@
   ],
   "homepage": "https://github.com/vrelease/vrelease-js#readme",
   "devDependencies": {
-    "@types/node": "^16.4.3",
+    "@types/node": "^16.4.6",
     "@types/terser-webpack-plugin": "^5.0.4",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
@@ -77,12 +80,13 @@
     "file-to-sha512": "^0.0.1",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.1",
+    "npm-check-updates": "^11.8.3",
     "prettier": "^2.3.2",
     "standardx": "^7.0.0",
     "ts-loader": "^9.2.4",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5",
-    "webpack": "^5.46.0",
+    "webpack": "^5.47.0",
     "webpack-cli": "^4.7.2"
   }
 }
