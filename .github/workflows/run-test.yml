@@ -46,7 +46,7 @@ jobs:
         run: npm run prerelease
 
       - name: Build package
-        run: npm run build
+        run: npm run build:js
 
       - name: Run vrelease (version)
         run: node lib/cli.js -v
