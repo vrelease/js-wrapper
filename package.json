@@ -7,8 +7,8 @@
     "bump:dev": "ncu --upgrade --dep dev",
     "bump:prod": "ncu --upgrade --dep prod --target minor",
     "bump:all": "npm run bump:dev && npm run bump:prod",
-    "fix:style": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write 'src/*.ts' && standardx --fix 'src/*.ts'",
-    "check:lint": "eslint --format=codeframe 'src/*.ts' && standardx",
+    "fix:style": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write '**/*.ts' && standardx --fix '**/*.ts'",
+    "check:lint": "eslint --format=codeframe '**/*.ts' && standardx",
     "prerelease": "ts-node pre-release-steps.ts"
   },
   "bin": {
@@ -35,7 +35,7 @@
     ]
   },
   "lint-staged": {
-    "src/*.ts": [
+    "**/*.ts": [
       "npm run fix:style"
     ]
   },

@@ -13,8 +13,6 @@
   "exclude": [
     "node_modules",
     "lib",
-    "tests",
-    "webpack.config.ts",
-    ".eslintrc.js"
+    "tests"
   ]
 }
