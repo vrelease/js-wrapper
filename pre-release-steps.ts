@@ -13,9 +13,10 @@ import { version } from './package.json'
 const asyncFs = fs.promises
 const asyncExec = util.promisify(exec)
 
-const binFile = (f: string): string => path.join(__dirname, 'bin', f)
-const artifactUrl = (f: string): string => `https://github.com/vrelease/vrelease/releases/download/v${version}/${f}`
 const log = (t: string): void => console.log(' ~ ' + t)
+const binFile = (f: string): string => path.join(__dirname, 'bin', f)
+const artifactUrl = (f: string): string =>
+  `https://github.com/vrelease/vrelease/releases/download/v${version}/${f}`
 
 const shasumFilename = 'SHASUM512'
 
@@ -69,4 +70,4 @@ async function main (): Promise<void> {
   log('done')
 }
 
-;(async (): Promise<void> => await main())()
+main().catch((err: Error): void => console.error(err))

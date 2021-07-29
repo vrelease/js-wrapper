@@ -16,7 +16,7 @@ const config: webpack.Configuration = {
     ],
     mangleExports: 'size',
     moduleIds: 'size',
-    chunkIds: 'size',
+    chunkIds: 'size'
   },
   output: {
     path: path.resolve(__dirname, 'lib'),
@@ -25,9 +25,7 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: ['.ts', '.js']
   },
-  plugins: [
-      new webpack.BannerPlugin({ raw: true, banner: '#!/usr/bin/env node' })
-  ],
+  plugins: [new webpack.BannerPlugin({ raw: true, banner: '#!/usr/bin/env node' })],
   module: {
     rules: [
       {
