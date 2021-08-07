@@ -9,6 +9,7 @@
     "bump:all": "npm run bump:dev && npm run bump:prod",
     "fix:style": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write '**/*.ts' && standardx --fix '**/*.ts'",
     "check:lint": "eslint --format=codeframe '**/*.ts' && standardx",
+    "commit": "cz",
     "prerelease": "ts-node pre-release-steps.ts"
   },
   "bin": {
@@ -66,12 +67,16 @@
   ],
   "homepage": "https://github.com/vrelease/vrelease-js#readme",
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@types/node": "^16.4.13",
     "@types/terser-webpack-plugin": "^5.0.4",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
     "axios": "^0.21.1",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.23.4",
@@ -88,5 +93,10 @@
     "typescript": "^4.3.5",
     "webpack": "^5.49.0",
     "webpack-cli": "^4.7.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
