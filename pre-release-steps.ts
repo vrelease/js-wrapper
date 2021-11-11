@@ -63,7 +63,7 @@ async function main (): Promise<void> {
     await asyncExec('git commit -m "chore: update binary hashes"')
     await asyncExec('git tag v' + version)
   } catch (e) {
-    log('got: '.concat(e.toString()))
+    log('got: '.concat(JSON.stringify(e)))
     log('skipping tag...')
   }
 
