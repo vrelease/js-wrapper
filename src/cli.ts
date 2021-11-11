@@ -1,6 +1,14 @@
 import path from 'path'
 import { spawn } from 'child_process'
 
+function err (e: unknown): string {
+  if (e instanceof Error) {
+    return e.message
+  }
+
+  return JSON.stringify(e)
+}
+
 function getPlatformBin (): string {
   const p = (s: string): string => 'vrelease-' + s
 
@@ -31,7 +39,7 @@ function getPlatformBin (): string {
     const input = process.argv.slice(2)
     spawn(binPath, input, { stdio: 'inherit' }).on('exit', process.exit)
   } catch (e) {
-    console.log(e)
+    console.log(err(e))
     process.exit(2)
   }
 })()
