@@ -10,17 +10,15 @@ function err (e: unknown): string {
 }
 
 function getPlatformBin (): string {
-  const p = (s: string): string => 'vrelease-' + s
-
   switch (process.platform) {
     case 'win32':
-      return p('windows.exe')
+      return 'windows.exe'
 
     case 'linux':
-      return p('linux')
+      return 'linux'
 
     case 'darwin':
-      return p('macos')
+      return 'macos'
 
     default:
       throw new Error(`unsupported platform ${process.platform}`)
@@ -33,7 +31,7 @@ function getPlatformBin (): string {
       throw new Error(`unsupported architecture ${process.arch}`)
     }
 
-    const file = getPlatformBin()
+    const file = 'vrelease-' + getPlatformBin()
     const binPath = path.resolve(__dirname, '..', 'bin', file)
 
     const input = process.argv.slice(2)
