@@ -47,3 +47,8 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+
+      - name: Upload coverage results
+        uses: codecov/codecov-action@v2
+        with:
+          verbose: true
