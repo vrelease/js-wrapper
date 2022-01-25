@@ -98,8 +98,20 @@ export class VRelease {
     this.suppressOutput = suppressOutput
   }
 
+  /* istanbul ignore next */
+  private getPlatform (): string {
+    return process.platform
+  }
+
+  /* istanbul ignore next */
+  private getArch (): string {
+    return process.arch
+  }
+
   private getPlatformBin (): string {
-    switch (process.platform) {
+    const p = this.getPlatform()
+
+    switch (p) {
       case 'win32':
         return 'windows.exe'
 
@@ -110,13 +122,15 @@ export class VRelease {
         return 'macos'
 
       default:
-        throw new Error(`unsupported platform ${process.platform}`)
+        throw new Error(`unsupported platform ${p}`)
     }
   }
 
   public async run (): Promise<void> {
-    if (process.arch !== 'x64') {
-      throw new Error(`unsupported architecture ${process.arch}`)
+    const arch = this.getArch()
+
+    if (arch !== 'x64') {
+      throw new Error(`unsupported architecture ${arch}`)
     }
 
     const file = 'vrelease-' + this.getPlatformBin()
