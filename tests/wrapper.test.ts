@@ -12,15 +12,10 @@ describe('VRelease:', () => {
     it('Should build a command with attacheables', () =>
       expect(VRelease.builder().attach('my-file').build()).toEqual(['-attach', 'my-file']))
 
-    it('Should build a command with many attacheables', () =>
-      expect(VRelease.builder().attach('one', 'two', 'three').build()).toEqual([
-        '-attach',
-        'one',
-        '-attach',
-        'two',
-        '-attach',
-        'three'
-      ]))
+    it('Should build a command with many attacheables', () => {
+      const c = ['-attach', 'one', '-attach', 'two', '-attach', 'three']
+      expect(VRelease.builder().attach('one', 'two', 'three').build()).toEqual(c)
+    })
 
     it('Should build a command with description flag', () =>
       expect(VRelease.builder().addDescription().build()).toEqual(['-add-description']))
@@ -45,7 +40,10 @@ describe('VRelease:', () => {
         'limit must be equal or greater than zero'
       ))
 
-    it('Should build a complex command', () =>
+    it('Should build a complex command', () => {
+      const c = ['-add-description', '-add-checksum', '-pre-release', '-debug', '-no-color']
+      const d = ['-limit', '250', '-attach', 'first', '-attach', 'second', '-attach', 'third']
+
       expect(
         VRelease.builder()
           .addDescription()
@@ -57,25 +55,12 @@ describe('VRelease:', () => {
           .attach('second', 'third')
           .preRelease()
           .build()
-      ).toEqual([
-        '-add-description',
-        '-add-checksum',
-        '-pre-release',
-        '-debug',
-        '-no-color',
-        '-limit',
-        '250',
-        '-attach',
-        'first',
-        '-attach',
-        'second',
-        '-attach',
-        'third'
-      ]))
+      ).toEqual([...c, ...d])
+    })
   })
 
   describe('Command runner:', () => {
-    const spyedSpawn = jest
+    const spawnSpy = jest
       .spyOn(cp, 'spawn')
       // @ts-expect-error
       .mockImplementation((cmd: string, args: readonly string[], opts: cp.SpawnOptions) => {
@@ -84,14 +69,56 @@ describe('VRelease:', () => {
         }
       })
 
+    const mockStringField = (field: string, retval: string): jest.SpyInstance =>
+      jest.spyOn(VRelease.prototype as any, field).mockImplementation((): string => retval)
+
+    const binPath = (s: string): string => path.resolve(__dirname, '..', 'bin', 'vrelease-' + s)
+
     it('Should run with proper binary', async () => {
-      await VRelease.builder().run()
+      const map = [
+        ['win32', 'windows.exe'],
+        ['linux', 'linux'],
+        ['darwin', 'macos']
+      ]
 
-      const bin = path.resolve(__dirname, '..', 'bin', 'vrelease-macos')
-      const args: string[] = []
-      const opts = { stdio: 'inherit' }
+      for (const m of map) {
+        const [platform, n] = m
+        mockStringField('getPlatform', platform)
 
-      expect(spyedSpawn).toBeCalledWith(bin, args, opts)
+        await VRelease.builder().run()
+        expect(spawnSpy).toBeCalledWith(binPath(n), [], { stdio: 'inherit' })
+      }
+    })
+
+    it('Should receive the command arguments', async () => {
+      mockStringField('getPlatform', 'linux')
+      const args = ['-add-description', '-limit', '50', '-attach', 'artifact']
+
+      await VRelease.builder().addDescription().setLimit(50).attach('artifact').run()
+      expect(spawnSpy).toBeCalledWith(binPath('linux'), args, { stdio: 'inherit' })
+    })
+
+    it('Should suppress the output when the flag is set', async () => {
+      mockStringField('getPlatform', 'linux')
+
+      await new VRelease([], true).run()
+      expect(spawnSpy).toBeCalledWith(binPath('linux'), [], { stdio: 'ignore' })
+    })
+
+    it('Should throw when an unsupported platform is detected', async () => {
+      const p = 'android'
+      mockStringField('getPlatform', p)
+
+      const c = async (): Promise<void> => await VRelease.builder().run()
+      await expect(c).rejects.toThrow(`unsupported platform ${p}`)
+    })
+
+    it('Should throw when an unsupported arch is detected', async () => {
+      const a = 'ppc'
+      mockStringField('getArch', a)
+
+      const c = async (): Promise<void> => await VRelease.builder().run()
+      await expect(c).rejects.toThrow(`unsupported architecture ${a}`)
     })
   })
 })
