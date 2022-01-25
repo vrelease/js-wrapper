@@ -8,7 +8,7 @@ import { exec } from 'child_process'
 import axios from 'axios'
 import { pathToSHA512 } from 'file-to-sha512'
 
-import { version } from './package.json'
+import { version, vrelease } from './package.json'
 
 const asyncFs = fs.promises
 const asyncExec = util.promisify(exec)
@@ -16,7 +16,7 @@ const asyncExec = util.promisify(exec)
 const log = (t: string): void => console.log(' ~ ' + t)
 const binFile = (f: string): string => path.join(__dirname, 'bin', f)
 const artifactUrl = (f: string): string =>
-  `https://github.com/vrelease/vrelease/releases/download/v${version}/${f}`
+  `https://github.com/vrelease/vrelease/releases/download/v${vrelease.version}/${f}`
 
 const shasumFilename = 'SHASUM512'
 
