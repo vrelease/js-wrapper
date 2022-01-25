@@ -1,43 +1,16 @@
-import path from 'path'
-import { spawn } from 'child_process'
+#!/usr/bin/env node
 
-function err (e: unknown): string {
-  if (e instanceof Error) {
-    return e.message
-  }
+import { VRelease } from './wrapper'
 
-  return JSON.stringify(e)
-}
+if (process.argv.length > 2) {
+  const input = process.argv.slice(2).filter((i) => i.length > 0)
 
-function getPlatformBin (): string {
-  switch (process.platform) {
-    case 'win32':
-      return 'windows.exe'
+  if (input.length > 0) {
+    new VRelease(input).run().catch((e) => {
+      const m = e instanceof Error ? e.message : JSON.stringify(e)
 
-    case 'linux':
-      return 'linux'
-
-    case 'darwin':
-      return 'macos'
-
-    default:
-      throw new Error(`unsupported platform ${process.platform}`)
+      console.error(m)
+      process.exit(2)
+    })
   }
 }
-
-;((): void => {
-  try {
-    if (process.arch !== 'x64') {
-      throw new Error(`unsupported architecture ${process.arch}`)
-    }
-
-    const file = 'vrelease-' + getPlatformBin()
-    const binPath = path.resolve(__dirname, '..', 'bin', file)
-
-    const input = process.argv.slice(2)
-    spawn(binPath, input, { stdio: 'inherit' }).on('exit', process.exit)
-  } catch (e) {
-    console.log(err(e))
-    process.exit(2)
-  }
-})()
