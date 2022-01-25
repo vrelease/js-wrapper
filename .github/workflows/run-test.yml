@@ -50,8 +50,6 @@ jobs:
           key: run-test-${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             run-test-${{ runner.os }}-node-${{ matrix.node-version }}-
-            run-test-${{ runner.os }}-node-
-            run-test-${{ runner.os }}-
 
       - name: Install dependencies
         if: steps.run-test-cache.outputs.cache-hit != 'true'
