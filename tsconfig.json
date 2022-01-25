@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES3",
+    "target": "ES5",
     "module": "commonjs",
+    "baseUrl": ".",
     "outDir": "./lib",
     "strict": true,
     "removeComments": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "declaration": true
   },
-  "exclude": [
-    "node_modules",
-    "lib",
-    "tests"
-  ]
 }
