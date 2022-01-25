@@ -2,9 +2,36 @@
   "name": "vrelease-bin",
   "version": "0.3.3-rc.1",
   "description": "binary wrapper for vrelease - a kiss solution to easily create project releases",
-  "vrelease": {
-    "version": "0.3.2"
+  "author": {
+    "name": "Caian R. Ertl",
+    "email": "hi@caian.org",
+    "url": "https://caian.org"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vrelease/vrelease-js.git"
+  },
+  "homepage": "https://github.com/vrelease/vrelease-js#readme",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/vrelease/vrelease-js/issues"
+  },
+  "keywords": [
+    "cli-app",
+    "cli",
+    "bin",
+    "binary",
+    "vrelease",
+    "ci-cd",
+    "continuous",
+    "delivery",
+    "pipeline",
+    "release",
+    "gitflow",
+    "javascript",
+    "js",
+    "wrapper"
+  ],
   "scripts": {
     "build:js": "tsc -p tsconfig.prod.json",
     "bump:dev": "ncu --upgrade --dep dev --target minor",
@@ -13,19 +40,20 @@
     "fix:style": "prettier --no-semi --print-width 100 --single-quote --trailing-comma none --write '**/*.ts' && standardx --fix '**/*.ts'",
     "check:lint": "eslint --format=codeframe '**/*.ts' && standardx",
     "commit": "cz",
-    "prerelease": "ts-node pre-release-steps.ts"
+    "prerelease": "ts-node pre-release-steps.ts",
+    "test": "jest --verbose --collect-coverage",
+    "test:cov": "npm test && codecov --token=\"$CODECOV_TOKEN\""
   },
   "main": "lib/wrapper.js",
   "types": "lib/wrapper.d.ts",
   "bin": {
     "vrelease": "lib/cli.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vrelease/vrelease-js.git"
+  "vrelease": {
+    "version": "0.3.2"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "files": [
     "icon.svg",
@@ -47,35 +75,49 @@
       "npm run fix:style"
     ]
   },
-  "author": {
-    "name": "Caian R. Ertl",
-    "email": "hi@caian.org",
-    "url": "https://caian.org"
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/vrelease/vrelease-js/issues"
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "**/src/**/*.{js,jsx,ts,tsx}",
+      "!lib/**/*.js"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "ts",
+      "tsx"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.prod.json"
+      }
+    },
+    "testPathIgnorePatterns": [
+      "/lib/",
+      "/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 50,
+        "statements": 50,
+        "branches": 50
+      }
+    }
   },
-  "keywords": [
-    "cli-app",
-    "cli",
-    "bin",
-    "binary",
-    "vrelease",
-    "ci-cd",
-    "continuous",
-    "delivery",
-    "pipeline",
-    "release",
-    "gitflow",
-    "javascript",
-    "js",
-    "wrapper"
-  ],
-  "homepage": "https://github.com/vrelease/vrelease-js#readme",
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
     "@commitlint/config-conventional": "^13.2.0",
+    "@types/jest": "^27.4.0",
     "@types/node": "^16.11.21",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
@@ -83,23 +125,21 @@
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
+    "eslint-config-standard-jsx": "^10.0.0",
     "eslint-config-standard-with-typescript": "^21.0.1",
     "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-jest": "^25.7.0",
+    "eslint-plugin-react": "^7.28.0",
     "file-to-sha512": "^0.0.1",
     "husky": "^7.0.4",
+    "jest": "^27.4.7",
     "lint-staged": "^11.2.6",
     "npm-check-updates": "^11.8.5",
     "prettier": "^2.5.1",
     "standardx": "^7.0.0",
+    "ts-jest": "^27.1.3",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
