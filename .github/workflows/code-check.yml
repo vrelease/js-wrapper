@@ -29,7 +29,17 @@ jobs:
         with:
           node-version: 16.13.0
 
+      - name: Cache Node modules
+        id: code-check-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: code-check-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            code-check-
+
       - name: Install dependencies
+        if: steps.code-check-cache.outputs.cache-hit != 'true'
         run: npm i
 
       - name: Check lint
