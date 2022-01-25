@@ -85,6 +85,7 @@
     "testEnvironment": "node",
     "collectCoverageFrom": [
       "**/src/**/*.{js,jsx,ts,tsx}",
+      "!src/cli.ts",
       "!lib/**/*.js"
     ],
     "moduleFileExtensions": [
