@@ -1,9 +1,12 @@
 {
   "name": "vrelease-bin",
-  "version": "0.3.2",
+  "version": "0.3.3-rc.0",
   "description": "binary wrapper for vrelease - a kiss solution to easily create project releases",
+  "vrelease": {
+    "version": "0.3.2"
+  },
   "scripts": {
-    "build:js": "webpack",
+    "build:js": "tsc -p tsconfig.prod.json",
     "bump:dev": "ncu --upgrade --dep dev --target minor",
     "bump:prod": "ncu --upgrade --dep prod --target minor",
     "bump:all": "npm run bump:dev && npm run bump:prod",
@@ -12,6 +15,8 @@
     "commit": "cz",
     "prerelease": "ts-node pre-release-steps.ts"
   },
+  "main": "lib/wrapper.js",
+  "types": "lib/wrapper.d.ts",
   "bin": {
     "vrelease": "lib/cli.js"
   },
@@ -27,6 +32,8 @@
     "LICENSE",
     "bin/vrelease-*",
     "SHASUM512",
+    "lib/wrapper.js",
+    "lib/wrapper.d.ts",
     "lib/cli.js"
   ],
   "standardx": {
@@ -70,8 +77,6 @@
     "@commitlint/cli": "^13.2.1",
     "@commitlint/config-conventional": "^13.2.0",
     "@types/node": "^16.11.21",
-    "@types/terser-webpack-plugin": "^5.0.4",
-    "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "axios": "^0.25.0",
@@ -90,9 +95,7 @@
     "standardx": "^7.0.0",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.4",
-    "webpack": "^5.66.0",
-    "webpack-cli": "^4.9.1"
+    "typescript": "^4.5.4"
   },
   "config": {
     "commitizen": {
