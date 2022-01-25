@@ -41,8 +41,7 @@
     "check:lint": "eslint --format=codeframe '**/*.ts' && standardx",
     "commit": "cz",
     "prerelease": "ts-node pre-release-steps.ts",
-    "test": "jest --verbose --collect-coverage",
-    "test:cov": "npm test && codecov --token=\"$CODECOV_TOKEN\""
+    "test": "jest --verbose --collect-coverage"
   },
   "main": "lib/wrapper.js",
   "types": "lib/wrapper.d.ts",
