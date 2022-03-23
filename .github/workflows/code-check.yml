@@ -43,7 +43,7 @@ jobs:
             ${{ env.preffix }}-
         env:
           cache-name: code-check
-          preffix: ${{ runner.os }}-node-${{ matrix.nodejs-version }}
+          preffix: ${{ runner.os }}-node
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'

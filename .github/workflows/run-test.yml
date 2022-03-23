@@ -37,10 +37,10 @@ jobs:
         with:
           version: 6.32.x
 
-      - name: Setup NodeJS ${{ matrix.nodejs-version }}
+      - name: Setup NodeJS ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.nodejs-version }}
+          node-version: ${{ matrix.node-version }}
           cache: pnpm
 
       - name: Cache pnpm store
@@ -57,7 +57,7 @@ jobs:
             ${{ env.preffix }}-
         env:
           cache-name: run-test
-          preffix: ${{ runner.os }}-node-${{ matrix.nodejs-version }}
+          preffix: ${{ runner.os }}-node-${{ matrix.node-version }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
