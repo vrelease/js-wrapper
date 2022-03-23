@@ -2,19 +2,14 @@ name: run-test
 
 on:
   push:
-    branches:
-      - "*"
-    tags:
-      - "*"
-    paths-ignore:
-      - "**.md"
+    branches: '*'
+    tags: '*'
+    paths-ignore: '**.md'
+
   pull_request:
-    branches:
-      - "*"
-    tags:
-      - "*"
-    paths-ignore:
-      - "**.md"
+    branches: '*'
+    tags: '*'
+    paths-ignore: '**.md'
 
 jobs:
   run-test:
@@ -37,30 +32,43 @@ jobs:
           git config --global user.email "hi@caian.org"
           git config --global user.name "Caian Ertl"
 
-      - name: Set up NodeJS ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.0
         with:
-          node-version: ${{ matrix.node-version }}
+          version: 6.32.x
 
-      - name: Cache Node modules
-        id: run-test-cache
+      - name: Setup NodeJS ${{ matrix.nodejs-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.nodejs-version }}
+          cache: pnpm
+
+      - name: Cache pnpm store
+        id: cache-node-modules
         uses: actions/cache@v2
         with:
-          path: node_modules
-          key: run-test-${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            ./node_modules
+            ~/.pnpm-store
+          key: ${{ env.preffix }}-cache-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            run-test-${{ runner.os }}-node-${{ matrix.node-version }}-
+            ${{ env.preffix }}-cache-${{ env.cache-name }}-
+            ${{ env.preffix }}-cache-
+            ${{ env.preffix }}-
+        env:
+          cache-name: run-test
+          preffix: ${{ runner.os }}-node-${{ matrix.nodejs-version }}
 
       - name: Install dependencies
-        if: steps.run-test-cache.outputs.cache-hit != 'true'
-        run: npm i
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: pnpm i
 
       - name: Run pre-release steps
-        run: npm run prerelease
+        run: pnpm run prerelease
 
       - name: Build package
         run: |
-          npm run build:js
+          pnpm run build:js
           npm pack
 
       - name: Install vrelease

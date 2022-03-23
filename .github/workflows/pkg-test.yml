@@ -2,15 +2,12 @@ name: pkg-test
 
 on:
   push:
-    tags:
-      - "v*"
-    paths-ignore:
-      - "**.md"
+    tags: 'v*'
+    paths-ignore: '**.md'
 
 jobs:
   run-test:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
