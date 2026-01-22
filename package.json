@@ -49,7 +49,7 @@
     "vrelease": "lib/cli.js"
   },
   "vrelease": {
-    "version": "0.3.2"
+    "version": "0.4.0"
   },
   "engines": {
     "node": ">=12"
