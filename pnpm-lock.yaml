@@ -15,8 +15,8 @@ importers:
         specifier: ^16.2.3
         version: 16.3.0
       '@commitlint/config-conventional':
-        specifier: ^16.2.1
-        version: 16.2.4
+        specifier: ^20.3.1
+        version: 20.3.1
       '@types/jest':
         specifier: ^27.4.1
         version: 27.5.2
@@ -279,9 +279,9 @@ packages:
     engines: {node: '>=v12'}
     hasBin: true
 
-  '@commitlint/config-conventional@16.2.4':
-    resolution: {integrity: sha512-av2UQJa3CuE5P0dzxj/o/B9XVALqYzEViHrMXtDrW9iuflrqCStWBAioijppj9URyz6ONpohJKAtSdgAOE0gkA==}
-    engines: {node: '>=v12'}
+  '@commitlint/config-conventional@20.3.1':
+    resolution: {integrity: sha512-NCzwvxepstBZbmVXsvg49s+shCxlJDJPWxXqONVcAtJH9wWrOlkMQw/zyl+dJmt8lyVopt5mwQ3mR5M2N2rUWg==}
+    engines: {node: '>=v18'}
 
   '@commitlint/config-validator@16.2.1':
     resolution: {integrity: sha512-hogSe0WGg7CKmp4IfNbdNES3Rq3UEI4XRPB8JL4EPgo/ORq5nrGTVzxJh78omibNuB8Ho4501Czb1Er1MoDWpw==}
@@ -1066,9 +1066,9 @@ packages:
     resolution: {integrity: sha512-i/gipMxs7s8L/QeuavPF2hLnJgH6pEZAttySB6aiQLWcX3puWDL3ACVmvBhJGxnAy52Qc15ua26BufY6KpmrVA==}
     engines: {node: '>=10'}
 
-  conventional-changelog-conventionalcommits@4.6.3:
-    resolution: {integrity: sha512-LTTQV4fwOM4oLPad317V/QNQ1FY4Hju5qeBIM1uTHbrnCE+Eg4CdRZ3gO2pUeR+tzWdp80M2j3qFFEDWVqOV4g==}
-    engines: {node: '>=10'}
+  conventional-changelog-conventionalcommits@7.0.2:
+    resolution: {integrity: sha512-NKXYmMR/Hr1DevQegFB4MwfM5Vv0m4UIxKZTTYuD98lpTknaZlSRrDOG4X7wIXpGkfsYxZTghUN+Qq+T0YQI7w==}
+    engines: {node: '>=16'}
 
   conventional-commit-types@3.0.0:
     resolution: {integrity: sha512-SmmCYnOniSsAa9GqWOeLqc179lfr5TRu5b4QFDkbsrJ5TZjPJx85wtOr3zn+1dbeNiXDKGPbZ72IKbPhLXh/Lg==}
@@ -3487,9 +3487,10 @@ snapshots:
       - '@swc/core'
       - '@swc/wasm'
 
-  '@commitlint/config-conventional@16.2.4':
+  '@commitlint/config-conventional@20.3.1':
     dependencies:
-      conventional-changelog-conventionalcommits: 4.6.3
+      '@commitlint/types': 20.3.1
+      conventional-changelog-conventionalcommits: 7.0.2
 
   '@commitlint/config-validator@16.2.1':
     dependencies:
@@ -3619,7 +3620,6 @@ snapshots:
     dependencies:
       '@types/conventional-commits-parser': 5.0.2
       chalk: 5.6.2
-    optional: true
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -3922,7 +3922,6 @@ snapshots:
   '@types/conventional-commits-parser@5.0.2':
     dependencies:
       '@types/node': 17.0.45
-    optional: true
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -4383,8 +4382,7 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
-  chalk@5.6.2:
-    optional: true
+  chalk@5.6.2: {}
 
   char-regex@1.0.2: {}
 
@@ -4519,11 +4517,9 @@ snapshots:
       compare-func: 2.0.0
       q: 1.5.1
 
-  conventional-changelog-conventionalcommits@4.6.3:
+  conventional-changelog-conventionalcommits@7.0.2:
     dependencies:
       compare-func: 2.0.0
-      lodash: 4.17.23
-      q: 1.5.1
 
   conventional-commit-types@3.0.0: {}
 
