@@ -110,16 +110,24 @@ export class VRelease {
 
   private getPlatformBin (): string {
     const p = this.getPlatform()
+    const arch = this.getArch()
+
+    if (arch !== 'x64' && arch !== 'arm64') {
+      throw new Error(`unsupported architecture ${arch}`)
+    }
 
     switch (p) {
       case 'win32':
+        if (arch !== 'x64') {
+          throw new Error(`unsupported architecture ${arch}`)
+        }
         return 'windows.exe'
 
       case 'linux':
-        return 'linux'
+        return arch === 'arm64' ? 'linux-arm64' : 'linux'
 
       case 'darwin':
-        return 'macos'
+        return arch === 'arm64' ? 'macos-arm64' : 'macos-x86_64'
 
       default:
         throw new Error(`unsupported platform ${p}`)
@@ -127,12 +135,6 @@ export class VRelease {
   }
 
   public async run (): Promise<void> {
-    const arch = this.getArch()
-
-    if (arch !== 'x64') {
-      throw new Error(`unsupported architecture ${arch}`)
-    }
-
     const file = 'vrelease-' + this.getPlatformBin()
     const binPath = path.resolve(__dirname, '..', 'bin', file)
 
@@ -140,14 +142,31 @@ export class VRelease {
     const stdio = this.suppressOutput ? 'ignore' : 'inherit'
 
     return await new Promise(function (resolve, reject) {
-      const process = spawn(binPath, args, { stdio })
+      let settled = false
+      const child = spawn(binPath, args, { stdio })
 
-      process.on('exit', () => {
-        resolve()
+      child.once('error', (err) => {
+        if (settled) {
+          return
+        }
+        settled = true
+        reject(err)
       })
 
-      process.on('error', (err) => {
-        reject(err)
+      child.once('exit', (code, signal) => {
+        if (settled) {
+          return
+        }
+        settled = true
+        if (code === 0) {
+          resolve()
+          return
+        }
+        if (signal) {
+          reject(new Error(`process exited with signal ${signal}`))
+          return
+        }
+        reject(new Error(`process exited with code ${code}`))
       })
     })
   }

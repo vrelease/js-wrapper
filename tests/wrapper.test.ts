@@ -63,25 +63,58 @@ describe('VRelease:', () => {
     const mockStringField = (field: string, retval: string): jest.SpyInstance =>
       jest.spyOn(VRelease.prototype as any, field).mockImplementation((): string => retval)
 
-    const spawnSpy = jest
-      .spyOn(cp, 'spawn')
-      // @ts-expect-error
-      .mockImplementation((cmd: string, args: readonly string[], opts: cp.SpawnOptions) => {
-        return {
-          on: (_: string, cb: (v?: any) => void) => cb()
+  const spawnSpy = jest.spyOn(cp, 'spawn')
+
+  const setupSpawn = (
+    exitCode: number | null = 0,
+    signal: NodeJS.Signals | null = null,
+    once: boolean = false
+  ): void => {
+    // @ts-expect-error - mocked process
+    const impl = (cmd: string, args: readonly string[], opts: cp.SpawnOptions) => {
+      const proc = {
+        once: (event: string, cb: (v?: any, s?: any) => void) => {
+          if (event === 'exit') {
+            cb(exitCode, signal)
+          }
+          return proc
+        },
+        on: (event: string, cb: (v?: any, s?: any) => void) => {
+          if (event === 'exit') {
+            cb(exitCode, signal)
+          }
+          return proc
         }
-      })
+      }
+      return proc
+    }
+
+    if (once) {
+      spawnSpy.mockImplementationOnce(impl)
+      return
+    }
+
+    spawnSpy.mockImplementation(impl)
+  }
+
+  beforeEach(() => {
+    spawnSpy.mockReset()
+    setupSpawn()
+  })
 
     it('Should run with proper binary', async () => {
       const map = [
-        ['win32', 'windows.exe'],
-        ['linux', 'linux'],
-        ['darwin', 'macos']
+        ['win32', 'x64', 'windows.exe'],
+        ['linux', 'x64', 'linux'],
+        ['linux', 'arm64', 'linux-arm64'],
+        ['darwin', 'x64', 'macos-x86_64'],
+        ['darwin', 'arm64', 'macos-arm64']
       ]
 
       for (const m of map) {
-        const [platform, n] = m
+        const [platform, arch, n] = m
         mockStringField('getPlatform', platform)
+        mockStringField('getArch', arch)
 
         await vb().run()
         expect(spawnSpy).toBeCalledWith(binPath(n), [], { stdio: 'inherit' })
@@ -90,6 +123,7 @@ describe('VRelease:', () => {
 
     it('Should receive the command arguments', async () => {
       mockStringField('getPlatform', 'linux')
+      mockStringField('getArch', 'x64')
       const args = ['-add-description', '-limit', '50', '-attach', 'artifact']
 
       await vb().addDescription().setLimit(50).attach('artifact').run()
@@ -98,6 +132,7 @@ describe('VRelease:', () => {
 
     it('Should suppress the output when the flag is set', async () => {
       mockStringField('getPlatform', 'linux')
+      mockStringField('getArch', 'x64')
 
       await new VRelease([], true).run()
       expect(spawnSpy).toBeCalledWith(binPath('linux'), [], { stdio: 'ignore' })
@@ -106,6 +141,7 @@ describe('VRelease:', () => {
     it('Should throw when an unsupported platform is detected', async () => {
       const p = 'android'
       mockStringField('getPlatform', p)
+      mockStringField('getArch', 'x64')
 
       const c = async (): Promise<void> => await vb().run()
       await expect(c).rejects.toThrow(`unsupported platform ${p}`)
@@ -117,6 +153,15 @@ describe('VRelease:', () => {
 
       const c = async (): Promise<void> => await vb().run()
       await expect(c).rejects.toThrow(`unsupported architecture ${a}`)
+    })
+
+    it('Should throw when exit code is non-zero', async () => {
+      mockStringField('getPlatform', 'linux')
+      mockStringField('getArch', 'x64')
+      setupSpawn(1, null, true)
+
+      const c = async (): Promise<void> => await vb().run()
+      await expect(c).rejects.toThrow('process exited with code 1')
     })
   })
 })
