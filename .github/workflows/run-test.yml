@@ -57,6 +57,13 @@ jobs:
       - name: Install vrelease
         run: npm i -g vrelease-bin-*.tgz
 
+      - name: Install Rosetta (macOS arm64)
+        if: runner.os == 'macOS'
+        run: |
+          if [ "$(uname -m)" = "arm64" ]; then
+            sudo softwareupdate --install-rosetta --agree-to-license
+          fi
+
       - name: Run vrelease (version)
         run: vrelease -v
 
