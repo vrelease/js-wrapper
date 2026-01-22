@@ -33,12 +33,22 @@ async function downloadAndWrite(fn: string): Promise<string> {
 async function downloadArtifacts(): Promise<string[]> {
   const releases = ['linux', 'linux-arm64', 'macos-x86_64', 'macos-arm64', 'windows.exe']
 
-  const promisesToExec: Array<Promise<string>> = []
+  const promisesToExec: Array<Promise<string | null>> = []
   for (let i = 0; i < releases.length; i++) {
-    promisesToExec.push(downloadAndWrite(`vrelease-${releases[i]}`))
+    const artifact = `vrelease-${releases[i]}`
+    promisesToExec.push(
+      downloadAndWrite(artifact).catch((err: unknown) => {
+        if (axios.isAxiosError(err) && err.response?.status === 404) {
+          log(`missing artifact ${artifact}, skipping`)
+          return null
+        }
+        throw err
+      }),
+    )
   }
 
-  return await Promise.all(promisesToExec)
+  const artifacts = await Promise.all(promisesToExec)
+  return artifacts.filter((artifact): artifact is string => artifact !== null)
 }
 
 async function main(): Promise<void> {

@@ -5,7 +5,9 @@ import path from 'node:path'
 
 import { VRelease } from '../src/wrapper'
 
-jest.mock('child_process')
+jest.mock('node:child_process', () => ({
+  spawn: jest.fn(),
+}))
 
 describe('VRelease:', () => {
   const vb = VRelease.builder
@@ -65,7 +67,7 @@ describe('VRelease:', () => {
       return jest.spyOn(proto, field).mockImplementation((): string => retval)
     }
 
-    const spawnSpy = jest.spyOn(cp, 'spawn')
+    const spawnSpy = cp.spawn as jest.MockedFunction<typeof cp.spawn>
 
     const setupSpawn = (
       exitCode: number | null = 0,
@@ -94,7 +96,7 @@ describe('VRelease:', () => {
             return proc
           },
         }
-        return proc
+        return proc as unknown as cp.ChildProcess
       }
 
       if (once) {

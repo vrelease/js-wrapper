@@ -12,6 +12,6 @@
     "resolveJsonModule": true,
     "declaration": true,
     "lib": ["ES2020"],
-    "types": ["node"]
+    "types": ["node", "jest"]
   }
 }
