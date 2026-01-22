@@ -17,17 +17,17 @@ jobs:
 
     steps:
       - name: Checkout to vrelease-js
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.2.0
         with:
-          version: 6.32.x
+          version: 10.14.0
 
       - name: Set up NodeJS
-        uses: actions/setup-node@v6.2.0
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 22.x
 
       - name: Cache pnpm store
         id: cache-node-modules

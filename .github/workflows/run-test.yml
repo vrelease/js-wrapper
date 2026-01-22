@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout to vrelease-js
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Configure git
         run: |
@@ -35,10 +35,10 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.2.0
         with:
-          version: 6.32.x
+          version: 10.14.0
 
       - name: Setup NodeJS ${{ matrix.node-version }}
-        uses: actions/setup-node@v6.2.0
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
