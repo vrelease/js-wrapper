@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node-version: [12.x, 14.x, 16.x, 17.x]
+        node-version: [18.x, 20.x, 22.x, 24.x]
 
     steps:
       - name: Set up NodeJS ${{ matrix.node-version }}
@@ -26,4 +26,3 @@ jobs:
 
       - name: Run vrelease (help)
         run: vrelease -h
-
