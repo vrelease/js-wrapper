@@ -4,10 +4,10 @@
 [![NPM Downloads][npm-shield]][npm-url]
 [![GitHub tag][tag-shield]][tag-url]
 
-[gh-run-t-shield]: https://img.shields.io/github/workflow/status/vrelease/vrelease-js/run-test?label=run%20test&logo=github&style=flat-square
+[gh-run-t-shield]: https://img.shields.io/github/actions/workflow/status/vrelease/vrelease-js/run-test.yml?branch=main&label=run%20test&logo=github&style=flat-square
 [gh-run-t-url]: https://github.com/vrelease/vrelease-js/actions/workflows/run-test.yml
 
-[gh-pkg-t-shield]: https://img.shields.io/github/workflow/status/vrelease/vrelease-js/pkg-test?label=package%20test&logo=github&style=flat-square
+[gh-pkg-t-shield]: https://img.shields.io/github/actions/workflow/status/vrelease/vrelease-js/pkg-test.yml?branch=main&label=package%20test&logo=github&style=flat-square
 [gh-pkg-t-url]: https://github.com/vrelease/vrelease-js/actions/workflows/pkg-test.yml
 
 [lgtm-shield]: https://img.shields.io/lgtm/grade/javascript/g/vrelease/vrelease-js.svg?logo=lgtm&style=flat-square
