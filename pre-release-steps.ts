@@ -31,7 +31,7 @@ async function downloadAndWrite(fn: string): Promise<string> {
 }
 
 async function downloadArtifacts(): Promise<string[]> {
-  const releases = ['linux', 'linux-arm64', 'macos-x86_64', 'macos-arm64', 'windows.exe']
+  const releases = ['linux', 'linux-arm64', 'macos-x86_64', 'macos-arm64', 'macos', 'windows.exe']
 
   const promisesToExec: Array<Promise<string | null>> = []
   for (let i = 0; i < releases.length; i++) {
@@ -47,8 +47,43 @@ async function downloadArtifacts(): Promise<string[]> {
     )
   }
 
-  const artifacts = await Promise.all(promisesToExec)
-  return artifacts.filter((artifact): artifact is string => artifact !== null)
+  const artifacts = (await Promise.all(promisesToExec)).filter(
+    (artifact): artifact is string => artifact !== null,
+  )
+
+  await ensureMacosAliases(artifacts)
+
+  return artifacts
+}
+
+async function ensureMacosAliases(artifacts: string[]): Promise<void> {
+  const legacy = binFile('vrelease-macos')
+  const arm64 = binFile('vrelease-macos-arm64')
+  const x64 = binFile('vrelease-macos-x86_64')
+
+  if (!artifacts.includes(legacy)) {
+    return
+  }
+
+  await ensureAlias(legacy, arm64, artifacts)
+  await ensureAlias(legacy, x64, artifacts)
+}
+
+async function ensureAlias(source: string, dest: string, artifacts: string[]): Promise<void> {
+  if (artifacts.includes(dest)) {
+    return
+  }
+
+  try {
+    await asyncFs.access(dest)
+    artifacts.push(dest)
+    return
+  } catch {
+    // continue
+  }
+
+  await asyncFs.copyFile(source, dest)
+  artifacts.push(dest)
 }
 
 async function main(): Promise<void> {
