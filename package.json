@@ -63,14 +63,9 @@
     "lib/wrapper.d.ts",
     "lib/cli.js"
   ],
-  "eslintIgnore": [
-    "lib",
-    "coverage"
-  ],
+  "eslintIgnore": ["lib", "coverage"],
   "lint-staged": {
-    "**/*.ts": [
-      "biome check --write --files"
-    ]
+    "**/*.ts": ["biome check --write --files"]
   },
   "config": {
     "commitizen": {
@@ -80,18 +75,8 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "collectCoverageFrom": [
-      "**/src/**/*.{js,jsx,ts,tsx}",
-      "!src/cli.ts",
-      "!lib/**/*.js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json",
-      "ts",
-      "tsx"
-    ],
+    "collectCoverageFrom": ["**/src/**/*.{js,jsx,ts,tsx}", "!src/cli.ts", "!lib/**/*.js"],
+    "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
@@ -100,10 +85,7 @@
         "tsconfig": "tsconfig.prod.json"
       }
     },
-    "testPathIgnorePatterns": [
-      "/lib/",
-      "/node_modules/"
-    ],
+    "testPathIgnorePatterns": ["/lib/", "/node_modules/"],
     "coverageThreshold": {
       "global": {
         "lines": 50,

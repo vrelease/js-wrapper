@@ -1,7 +1,7 @@
 /* globals describe it expect jest */
 
-import path from 'path'
-import * as cp from 'child_process'
+import * as cp from 'node:child_process'
+import path from 'node:path'
 
 import { VRelease } from '../src/wrapper'
 
@@ -58,49 +58,57 @@ describe('VRelease:', () => {
   })
 
   describe('Command runner:', () => {
-    const binPath = (s: string): string => path.resolve(__dirname, '..', 'bin', 'vrelease-' + s)
+    const binPath = (s: string): string => path.resolve(__dirname, '..', 'bin', `vrelease-${s}`)
 
-    const mockStringField = (field: string, retval: string): jest.SpyInstance =>
-      jest.spyOn(VRelease.prototype as any, field).mockImplementation((): string => retval)
+    const mockStringField = (field: string, retval: string): jest.SpyInstance => {
+      const proto = VRelease.prototype as unknown as Record<string, () => string>
+      return jest.spyOn(proto, field).mockImplementation((): string => retval)
+    }
 
-  const spawnSpy = jest.spyOn(cp, 'spawn')
+    const spawnSpy = jest.spyOn(cp, 'spawn')
 
-  const setupSpawn = (
-    exitCode: number | null = 0,
-    signal: NodeJS.Signals | null = null,
-    once: boolean = false
-  ): void => {
-    // @ts-expect-error - mocked process
-    const impl = (cmd: string, args: readonly string[], opts: cp.SpawnOptions) => {
-      const proc = {
-        once: (event: string, cb: (v?: any, s?: any) => void) => {
-          if (event === 'exit') {
-            cb(exitCode, signal)
-          }
-          return proc
-        },
-        on: (event: string, cb: (v?: any, s?: any) => void) => {
-          if (event === 'exit') {
-            cb(exitCode, signal)
-          }
-          return proc
+    const setupSpawn = (
+      exitCode: number | null = 0,
+      signal: NodeJS.Signals | null = null,
+      once = false,
+    ): void => {
+      // @ts-expect-error - mocked process
+      const impl = (cmd: string, args: readonly string[], opts: cp.SpawnOptions) => {
+        const proc = {
+          once: (
+            event: string,
+            cb: (code?: number | null, signal?: NodeJS.Signals | null) => void,
+          ) => {
+            if (event === 'exit') {
+              cb(exitCode, signal)
+            }
+            return proc
+          },
+          on: (
+            event: string,
+            cb: (code?: number | null, signal?: NodeJS.Signals | null) => void,
+          ) => {
+            if (event === 'exit') {
+              cb(exitCode, signal)
+            }
+            return proc
+          },
         }
+        return proc
       }
-      return proc
+
+      if (once) {
+        spawnSpy.mockImplementationOnce(impl)
+        return
+      }
+
+      spawnSpy.mockImplementation(impl)
     }
 
-    if (once) {
-      spawnSpy.mockImplementationOnce(impl)
-      return
-    }
-
-    spawnSpy.mockImplementation(impl)
-  }
-
-  beforeEach(() => {
-    spawnSpy.mockReset()
-    setupSpawn()
-  })
+    beforeEach(() => {
+      spawnSpy.mockReset()
+      setupSpawn()
+    })
 
     it('Should run with proper binary', async () => {
       const map = [
@@ -108,7 +116,7 @@ describe('VRelease:', () => {
         ['linux', 'x64', 'linux'],
         ['linux', 'arm64', 'linux-arm64'],
         ['darwin', 'x64', 'macos-x86_64'],
-        ['darwin', 'arm64', 'macos-arm64']
+        ['darwin', 'arm64', 'macos-arm64'],
       ]
 
       for (const m of map) {

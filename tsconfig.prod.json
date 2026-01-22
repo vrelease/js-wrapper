@@ -1,9 +1,4 @@
 {
   "extends": "./tsconfig",
-  "exclude": [
-    "node_modules",
-    "lib",
-    "tests",
-    "./pre-release-steps.ts"
-  ]
+  "exclude": ["node_modules", "lib", "tests", "./pre-release-steps.ts"]
 }

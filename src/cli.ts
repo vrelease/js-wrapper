@@ -2,7 +2,7 @@
 
 import { VRelease } from './wrapper'
 
-function runCLI (): void {
+function runCLI(): void {
   const input = process.argv.slice(2).filter((i) => i.length > 0)
 
   if (input.length === 0) {

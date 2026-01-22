@@ -1,42 +1,42 @@
-import path from 'path'
-import { spawn } from 'child_process'
+import { spawn } from 'node:child_process'
+import path from 'node:path'
 
 class VReleaseCmdBuilder {
-  private addDescriptionFlag: boolean = false
-  private addChecksumFlag: boolean = false
-  private preReleaseFlag: boolean = false
-  private debugFlag: boolean = false
-  private noColorFlag: boolean = false
+  private addDescriptionFlag = false
+  private addChecksumFlag = false
+  private preReleaseFlag = false
+  private debugFlag = false
+  private noColorFlag = false
 
-  private limitParam: number = -1
+  private limitParam = -1
   private readonly attacheables: string[] = []
 
-  public addDescription (): this {
+  public addDescription(): this {
     this.addDescriptionFlag = true
     return this
   }
 
-  public addChecksum (): this {
+  public addChecksum(): this {
     this.addChecksumFlag = true
     return this
   }
 
-  public preRelease (): this {
+  public preRelease(): this {
     this.preReleaseFlag = true
     return this
   }
 
-  public enableDebug (): this {
+  public enableDebug(): this {
     this.debugFlag = true
     return this
   }
 
-  public noColor (): this {
+  public noColor(): this {
     this.noColorFlag = true
     return this
   }
 
-  public setLimit (l: number): this {
+  public setLimit(l: number): this {
     if (l < 0) {
       throw new Error('limit must be equal or greater than zero')
     }
@@ -45,12 +45,12 @@ class VReleaseCmdBuilder {
     return this
   }
 
-  public attach (...p: string[]): this {
+  public attach(...p: string[]): this {
     this.attacheables.push(...p)
     return this
   }
 
-  public build (): string[] {
+  public build(): string[] {
     const cmd: string[] = []
 
     if (this.addDescriptionFlag) {
@@ -78,13 +78,13 @@ class VReleaseCmdBuilder {
     }
 
     if (this.attacheables.length > 0) {
-      cmd.push(...this.attacheables.map((a) => ['-attach', a]).flat())
+      cmd.push(...this.attacheables.flatMap((a) => ['-attach', a]))
     }
 
     return cmd
   }
 
-  public async run (suppressOutput?: boolean): Promise<void> {
+  public async run(suppressOutput?: boolean): Promise<void> {
     return await new VRelease(this.build(), suppressOutput).run()
   }
 }
@@ -93,22 +93,22 @@ export class VRelease {
   private readonly args: string[]
   private readonly suppressOutput: boolean
 
-  public constructor (args: string[], suppressOutput: boolean = false) {
+  public constructor(args: string[], suppressOutput = false) {
     this.args = args
     this.suppressOutput = suppressOutput
   }
 
   /* istanbul ignore next */
-  private getPlatform (): string {
+  private getPlatform(): string {
     return process.platform
   }
 
   /* istanbul ignore next */
-  private getArch (): string {
+  private getArch(): string {
     return process.arch
   }
 
-  private getPlatformBin (): string {
+  private getPlatformBin(): string {
     const p = this.getPlatform()
     const arch = this.getArch()
 
@@ -134,14 +134,14 @@ export class VRelease {
     }
   }
 
-  public async run (): Promise<void> {
-    const file = 'vrelease-' + this.getPlatformBin()
+  public async run(): Promise<void> {
+    const file = `vrelease-${this.getPlatformBin()}`
     const binPath = path.resolve(__dirname, '..', 'bin', file)
 
     const args = this.args
     const stdio = this.suppressOutput ? 'ignore' : 'inherit'
 
-    return await new Promise(function (resolve, reject) {
+    return await new Promise((resolve, reject) => {
       let settled = false
       const child = spawn(binPath, args, { stdio })
 
@@ -171,7 +171,7 @@ export class VRelease {
     })
   }
 
-  public static builder (): VReleaseCmdBuilder {
+  public static builder(): VReleaseCmdBuilder {
     return new VReleaseCmdBuilder()
   }
 }
